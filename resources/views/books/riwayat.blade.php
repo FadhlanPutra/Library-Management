@@ -15,7 +15,7 @@
                                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
+                                <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
                             </div>
                         </form>
                     </div>
@@ -42,8 +42,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                           
                         @foreach ($loans as $loan)
-                            <tr class="border-b dark:border-gray-700">
+                        @php
+                                $time = date('Y-m-d');
+                                $timeClass = $loan->tanggal_kembali === $time ? 'text-red-500' : '';
+                                $timeClass2 = $loan->tanggal_kembali < $time ? 'bg-red-500 text-white' : '';
+                        @endphp
+                            <tr class="border-b dark:border-gray-700 {{ $timeClass. ' ' .$timeClass2 }}">
                                 <td class="px-4 py-3">{{ $loop->iteration }}</td>
                                 <td class="px-4 py-3">{{ $loan->book->judul_buku }}</td>
                                 <td class="px-4 py-3">{{ $loan->book->penulis }}</td>

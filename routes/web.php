@@ -3,6 +3,7 @@
 use App\Models\Book;
 use App\Models\User;
 use App\Models\pinjamBuku;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UsersController;
@@ -30,7 +31,6 @@ Route::middleware('auth')->group(function () {
 
 Route::group(['middleware' => ['auth', 'role:admin']], function (){
     Route::put('/riwayat/perpanjang/{id}',[bookController::class,'perpanjang'])->name('books.perpanjang');
-    // Route::get('/dashboard', [BookController::class, 'index'])->name('books.index');
     Route::get('/admin/riwayat', [BookController::class, 'riwayat'])->name('books.riwayat');
     Route::patch('/admin/riwayat/{id}', [BookController::class, 'updateRiwayat'])->name('books.update.riwayat');
     Route::delete('/admin/riwayat/{id}', [BookController::class, 'deleteRiwayat'])->name('books.delete.riwayat');
@@ -39,13 +39,11 @@ Route::group(['middleware' => ['auth', 'role:admin']], function (){
     Route::resource('users', UsersController::class);
 });
 
+Route::resource('anggota', AnggotaController::class);
+
 Route::group(['middleware' => ['auth', 'role:anggota']], function (){
     // Route::get('/riwayat', [BookController::class])->name('books.riwayat');
-    Route::resource('anggota', AnggotaController::class);
     Route::get('/anggota/riwayat', [AnggotaController::class, 'riwayat'])->name('anggota.riwayat');
 });
-
-
-// Route::resource('users', UsersController::class);
 
 require __DIR__.'/auth.php';

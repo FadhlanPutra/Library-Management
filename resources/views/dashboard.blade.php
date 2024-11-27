@@ -22,11 +22,12 @@
     <div class="flex flex-col me-1 text-white">
         <div class='p-4 bg-black rounded-xl border-black shadow-lg'>
             <div class='flex flex-col lg:flex-row gap-8  justify-center'>
-                <img src="/aset/library.webp" alt="logo Library" class='w-full max-w-md' />
+                <img src="/aset/library.webp" alt="logo Library" class='w-full max-w-md' loading="lazy"/>
                 <div class='flex flex-col justify-center gap-4 lg:w-1/2'>
                     <h1 class='font-extrabold text-2xl'>Selamat Pagi, {{ Auth::user()->name }}!</h1>
                     <p>Selamat datang di Dashboard Library Pesat! Di sini, Anda dapat melihat buku-buku yang tersedia untuk dipinjam, memantau status peminjaman Anda, dan mengelola riwayat peminjaman dengan mudah. Nikmati pengalaman peminjaman buku yang lebih mudah dan efisien, dan pastikan Anda selalu mendapatkan buku favorit Anda!</p>
                 
+                @if(Auth::user()->role == 'admin')    
                     <div class='flex lg:gap-5 max-sm:justify-between'>
                         <a href="{{ route('books.index') }}">
                             <button href='#' class='p-3 px-6 bg-gray-300 rounded-full text-black'>Baca Buku</button>
@@ -36,6 +37,15 @@
                             <button class='p-3 px-6 bg-[#A78E51] rounded-full'>Pinjam Buku</button>
                         </a>
                     </div>
+                @endif
+
+                @if(Auth::user()->role == 'anggota')
+                    <div class='flex lg:gap-5 max-sm:justify-between'>
+                        <a href="{{ route('anggota.index') }}">
+                            <button class='p-3 px-6 bg-[#A78E51] rounded-full'>Pinjam Buku</button>
+                        </a>
+                    </div>
+                @endif
 
                 </div>
             </div>
@@ -50,9 +60,17 @@
 
             <div class="flex max-sm:flex-col lg:flex-row justify-between">
                 <p class='py-3'>Dashboard informasi total buku, buku sedang dipinjam, buku diperiksa, buku rusak</p>
-                <a href="{{ route('books.riwayat') }}">
-                    <button class='p-2 px-3 mt-1 bg-gray-300 rounded-full text-black'>Kelola</button>
+                @if(Auth::user()->role == 'admin')
+                    <a href="{{ route('books.riwayat') }}">
+                        <button class='p-2 px-3 mt-1 bg-gray-300 rounded-full w-full text-black'>Kelola</button>
+                    </a>
+                @endif
+
+                @if(Auth::user()->role == 'anggota')
+                <a href="{{ route('anggota.index') }}">
+                    <button class='p-2 px-3 mt-1 bg-gray-300 rounded-full w-full text-black'>Lihat Buku</button>
                 </a>
+                @endif
             </div>
 
 
@@ -76,7 +94,7 @@
                         <img src="/aset/buku_dikembalikan.png" class="w-24 h-24 max-sm:w-12 max-sm:h-12" alt="buku dikembalikan" />
                         <p class="font-medium lg:text-7xl max-sm:text-4xl">{{ $totalDiperiksa }}</p>
                     </span>
-                    <p class="text-center lg:mt-28 max-sm:mt-16">Buku Dikembalikan</p>
+                    <p class="text-center lg:mt-28 max-sm:mt-16">Buku Diperiksa</p>
                 </div>
                 <div class="bg-[#AC455E] lg:w-72 lg:h-72 max-sm:w-44 max-sm:h-44 rounded-3xl shadow-md">
                     <span class="flex justify-between mt-5 mx-5">

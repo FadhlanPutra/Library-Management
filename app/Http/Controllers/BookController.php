@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use \App\Models\Book;
+use Illuminate\View\View;
 use App\Models\pinjamBuku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -93,9 +95,14 @@ class BookController extends Controller
         $book->delete();
         return redirect()->route('books.index')->with('success', 'Book deleted successfully');
     }
+    
+
+    // RIWAYAT 
+
+
     public function riwayat(){
         $loans = pinjamBuku::all();
-        return view('books.riwayat', compact('loans'));
+        return view('books.riwayat', compact('loans',));
     }
 
     // public function editRiwayat(string $id)

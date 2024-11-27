@@ -18,6 +18,6 @@ class Book extends Model
     ];
     public function loans()
     {
-        return $this->hasMany(pinjamBuku::class);
+        return $this->hasMany(pinjamBuku::class, 'book_id');
     }
 }

@@ -41,8 +41,12 @@
                         <tbody>
                         @foreach ($loans as $loan)
 
-                       
-                            <tr class="border-b dark:border-gray-700">
+                        @php
+                            $time = date('Y-m-d');
+                            $timeClass = $loan->tanggal_kembali === $time ? 'text-red-500' : '';
+                            $timeClass2 = $loan->tanggal_kembali < $time ? 'bg-red-500 text-white' : '';
+                        @endphp
+                            <tr class="border-b dark:border-gray-700 {{ $timeClass. ' ' .$timeClass2 }}">
                                 <td class="px-4 py-3">{{ $loop->iteration }}</td>
                                 <td class="px-4 py-3">{{ $loan->book->judul_buku }}</td>
                                 <td class="px-4 py-3">{{ $loan->book->penulis }}</td>
