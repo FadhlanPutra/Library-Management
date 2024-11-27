@@ -40,7 +40,7 @@
         <img src='/aset/library.webp' alt="Logo" class="w-full max-w-md"/>
         <div class='flex flex-col justify-center items-center w-1/2 text-center'>
             <h1 class='font-bold text-2xl mt-2 mb-2'>Welcome to Library Pesat IT XPRO</h1>
-            <p class='text-center font-medium'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis quibusdam placeat, veritatis iure tempore vitae, dicta autem aspernatur praesentium fuga eum enim? Sunt minus temporibus repellat autem, asperiores recusandae minima!</p>
+            <p class='text-center font-medium'>Selamat datang di Library Pesat, aplikasi sistem peminjaman buku yang memudahkan siswa dan guru untuk meminjam buku secara online. Melalui website ini, Anda dapat mencari dan memesan buku yang diinginkan, serta mengelola riwayat peminjaman Anda.</p>
             {{-- <link rel="prefetch"  href={route('login')} class='bg-[#6E987C] px-6 py-4 p-2 rounded-lg text-white mt-2'>Login</link> --}}
 
             <div class="mt-5">

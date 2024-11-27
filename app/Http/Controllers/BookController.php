@@ -198,14 +198,19 @@ class BookController extends Controller
         return redirect()->route('books.riwayat')->with('success', 'Buku Sudah Dihapus Dari Stock');
     }
 
-    public function showbook(Request $request)
-   {
-      $books = book::all();
-      if($request->keyword != ''){
-      $books = book::where('judul_buku','LIKE','%'.$request->keyword.'%')->get();
-      }
-      return response()->json([
-         'books' => $books
-      ]);
+    public function perpanjang(Request $request, string $id)
+    {
+        $loan = pinjamBuku::findOrFail($id);
+
+        $request->validate([
+            'tanggal_kembali' => 'required'
+        ]);
+
+        $loan->update([
+            'tanggal_kembali' => $request->tanggal_kembali
+        ]);
+
+        $loan->update($request->all());
+        return redirect()->route('books.riwayat')->with('success', 'Masa Berhasil Diperpanjang');
     }
 }

@@ -25,7 +25,7 @@
                 <img src="/aset/library.webp" alt="logo Library" class='w-full max-w-md' />
                 <div class='flex flex-col justify-center gap-4 lg:w-1/2'>
                     <h1 class='font-extrabold text-2xl'>Selamat Pagi, {{ Auth::user()->name }}!</h1>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Alias corrupti minus suscipit optio, voluptatibus cupiditate est neque saepe enim aut ex autem, quis excepturi, libero natus magnam accusantium? Natus, magnam?</p>
+                    <p>Selamat datang di Dashboard Library Pesat! Di sini, Anda dapat melihat buku-buku yang tersedia untuk dipinjam, memantau status peminjaman Anda, dan mengelola riwayat peminjaman dengan mudah. Nikmati pengalaman peminjaman buku yang lebih mudah dan efisien, dan pastikan Anda selalu mendapatkan buku favorit Anda!</p>
                 
                     <div class='flex lg:gap-5 max-sm:justify-between'>
                         <a href="{{ route('books.index') }}">

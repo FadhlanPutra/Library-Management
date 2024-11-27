@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::group(['middleware' => ['auth', 'role:admin']], function (){
-    Route::post('/search',[bookController::class,'showbook'])->name('books.search');
+    Route::put('/riwayat/perpanjang/{id}',[bookController::class,'perpanjang'])->name('books.perpanjang');
     // Route::get('/dashboard', [BookController::class, 'index'])->name('books.index');
     Route::get('/admin/riwayat', [BookController::class, 'riwayat'])->name('books.riwayat');
     Route::patch('/admin/riwayat/{id}', [BookController::class, 'updateRiwayat'])->name('books.update.riwayat');
