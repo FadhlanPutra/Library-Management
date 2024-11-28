@@ -16,7 +16,7 @@ class AnggotaController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
+        $books = Book::paginate(10);
         return view('anggota.index', compact('books'));
     }
 
@@ -110,7 +110,7 @@ class AnggotaController extends Controller
     }
 
     public function riwayat(){
-        $loans = pinjamBuku::all();
+        $loans = pinjamBuku::paginate(10);
         return view('anggota.riwayat', compact('loans'));
     }
 }

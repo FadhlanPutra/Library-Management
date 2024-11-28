@@ -105,5 +105,7 @@
 
 @endforeach 
 
+{{ $books->links() }}
+
     </section>
 </x-app-layout>

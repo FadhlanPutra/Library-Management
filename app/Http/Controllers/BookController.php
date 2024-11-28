@@ -17,7 +17,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
+        $books = Book::paginate(10);
         return view('books.index', compact('books'));
     }
 
@@ -101,8 +101,8 @@ class BookController extends Controller
 
 
     public function riwayat(){
-        $loans = pinjamBuku::all();
-        return view('books.riwayat', compact('loans',));
+        $loans = pinjamBuku::paginate(10);
+        return view('books.riwayat', compact('loans'));
     }
 
     // public function editRiwayat(string $id)

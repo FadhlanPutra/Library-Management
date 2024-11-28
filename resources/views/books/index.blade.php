@@ -105,7 +105,7 @@
                                 </td>
                             </tr>
                         @endforeach
-
+                        {{ $books->links() }}
                         </tbody>
                     </table>
                 </div>
