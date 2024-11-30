@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="icon" href="aset/buku.webp">
+        <link rel="icon" href="{{ asset('aset/buku.webp') }}" type="image/x-icon">
         {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
 
         <title>Perpustakaan-Pesat_{{ucfirst(Auth::user()->role)}}</title>
@@ -21,6 +21,18 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     </head>
     <body class="font-sans antialiased">
+
+        @php
+            $waktu = now()->locale('id')->isoFormat('dddd, D MMMM YYYY | HH:mm');
+
+            $jam = (int) now()->locale('id')->isoFormat('HH');
+
+            if ($jam >= 6 && $jam < 18) {
+                $icon = '<i id="theme-toggle-icon" class="fas fa-sun pt-1"></i>';
+            } else {
+                $icon = '<i id="theme-toggle-icon" class="fa-solid fa-moon pt-1"></i>';
+            }
+        @endphp
         
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             @include('layouts.navigation')
@@ -31,11 +43,10 @@
                     <div>
                         <input type="text" class="rounded-lg border-gray-500 focus:ring-opacity-50" placeholder="Cari Buku...">
                     </div>
-                    {{-- <p>{{ now()->format('l, d M Y | H:i ') }}</p> --}}
                     <div class="flex flex-row gap-4">
-                        <p>{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY | HH:mm') }}</p>
-                        <i class="fa-regular fa-calendar"></i>
-                            <i id="theme-toogle-icon" class="fas fa-sun"></i>
+                        <p>{{ $waktu }}</p>
+                        <i class="fa-regular fa-calendar pt-1"></i>
+                        {!! $icon !!}
                     </div>
                 </div>
             </nav>
@@ -55,12 +66,9 @@
             </main>
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-
-
-
     //message with sweetalert
     @if(session('success'))
         Swal.fire({
@@ -81,10 +89,40 @@
     @endif
 
 
+    document.addEventListener('click', function (e) {
+    // Cek jika elemen yang diklik memiliki kelas 'confirm-button'
+    // if (e.target.classList.contains('confirm-button')) {
+    //     e.preventDefault(); // Mencegah aksi default tombol
+
+    const confirmButton = e.target.closest('.confirm-button');
+    if (confirmButton) {
+        e.preventDefault();
+
+        // Ambil pesan konfirmasi dan ID form dari atribut data
+        const message = e.target.getAttribute('data-message') || "Apakah Anda yakin?";
+        const formId = e.target.getAttribute('data-form');
+
+        // Tampilkan SweetAlert
+        Swal.fire({
+            title: "Konfirmasi",
+            text: message,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika dikonfirmasi, submit form
+                if (formId) {
+                    document.getElementById(formId).submit();
+                    }
+            }
+        });
+    }
+    });
 
 
 </script>
-
 
         </div>
     </body>

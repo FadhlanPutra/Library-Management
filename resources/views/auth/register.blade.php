@@ -2,7 +2,7 @@
 
     <div class=' text-white mb-3'>
         <h1 class='font-bold text-3xl'>Daftar Menjadi Anggota</br>Perpustakaan SMK PESAT</h1>
-        <p class='text-[#D6D6D6] my-5'>Lengkapi Data di Bawah Ini</p>
+        <p class='text-[#000000] my-5'>Lengkapi Data di Bawah Ini</p>
     </div>
 
     <form method="POST" action="{{ route('register') }}">
@@ -46,7 +46,7 @@
         </div>
 
         <div class="flex items-center justify-between mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
+            <a class="underline text-sm text-black  hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
                 {{ __('Sudah Pernah Log In?') }}
             </a>
 

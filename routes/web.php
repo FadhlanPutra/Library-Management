@@ -9,6 +9,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Requests\ProfileUpdateRequest;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,7 +44,7 @@ Route::resource('anggota', AnggotaController::class);
 
 Route::group(['middleware' => ['auth', 'role:anggota']], function (){
     // Route::get('/riwayat', [BookController::class])->name('books.riwayat');
-    Route::get('/anggota/riwayat', [AnggotaController::class, 'riwayat'])->name('anggota.riwayat');
+    Route::get('/riwayat', [AnggotaController::class, 'riwayat'])->name('anggota.riwayat');
 });
 
 require __DIR__.'/auth.php';

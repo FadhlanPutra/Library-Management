@@ -70,7 +70,6 @@ class AnggotaController extends Controller
 
         //perbarui status
         $book->update([
-            // 'status' => false,
             'loan_status' => 'borrowed',
         ]);
 

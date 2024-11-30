@@ -83,7 +83,7 @@ class BookController extends Controller
 
         $book = Book::findOrFail($id);
         $book->update($request->all());
-        return redirect()->route('books.index')->with('success', 'Book updated successfully');
+        return redirect()->route('books.index')->with('success', 'Buku Berhasil Diubah');
     }
 
     /**
@@ -93,7 +93,7 @@ class BookController extends Controller
     {
         $book = Book::find($id);
         $book->delete();
-        return redirect()->route('books.index')->with('success', 'Book deleted successfully');
+        return redirect()->route('books.index')->with('success', 'Buku Berhasil Dihapus');
     }
     
 
@@ -104,12 +104,6 @@ class BookController extends Controller
         $loans = pinjamBuku::paginate(10);
         return view('books.riwayat', compact('loans'));
     }
-
-    // public function editRiwayat(string $id)
-    // {
-    //     $loans = pinjamBuku::findOrFail($id);
-    //     return view('books.edit', compact('loans'));
-    // }
 
     public function updateRiwayat(Request $request, string $id)
     {
@@ -125,7 +119,7 @@ class BookController extends Controller
             'status' => $request->status,
         ]);
 
-        if ($loans->status == 'tersedia') {
+        if ($loans->status == 'diperiksa') {
             // Periksa apakah buku_diperiksa tidak negatif
             if ($user->buku_diperiksa >= 0) {
                 $user->increment('buku_diperiksa');
@@ -139,7 +133,6 @@ class BookController extends Controller
 
     public function deleteRiwayat(string $id)
 {
-    // Menemukan peminjaman berdasarkan ID
     $loan = pinjamBuku::find($id);
     $user = User::find(Auth::id());
 
@@ -162,14 +155,11 @@ class BookController extends Controller
             $user->update(['buku_diperiksa' => 0]);
         }
 
-        // Hapus riwayat peminjaman
         $loan->delete();
 
-        // Redirect ke halaman riwayat dengan pesan sukses
         return redirect()->route('books.riwayat')->with('success', 'Buku Sudah Dikembalikan');
     }
 
-    // Jika tidak ditemukan, redirect kembali dengan pesan error
     return redirect()->route('books.riwayat')->with('error', 'Peminjaman tidak ditemukan');
 }
 
@@ -181,7 +171,6 @@ class BookController extends Controller
 
 
         if ($loan) {
-            // Menemukan pengguna yang sedang login
             $user = User::find(Auth::id());
     
             // dd($user);
@@ -198,7 +187,6 @@ class BookController extends Controller
                 $user->update(['buku_diperiksa' => 0]);
             }
     
-            // Menghapus data peminjaman
             $loan->delete();
         }
 

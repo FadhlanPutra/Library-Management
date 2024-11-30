@@ -64,7 +64,7 @@
                                             <select name="status" id="status" class="{{ $loan->status == 'borrowed' ? 'text-red-500' : 'text-green-500' }} w-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 " onchange="document.getElementById('loan-form-{{$loan->id}}').submit()">
                                                 <option value="{{ $loan->status }}">{{ ucfirst($loan->status) }}</option>
                                                 <option class="dark:text-white" value="borrowed" {{ $loan->status === 'borrowed' ? 'hidden' : '' }}>Borrowed</option>
-                                                <option class="dark:text-white" value="tersedia" {{ $loan->status === 'tersedia' ? 'hidden' : '' }}>Tersedia</option>
+                                                <option class="dark:text-white" value="diperiksa" {{ $loan->status === 'diperiksa' ? 'hidden' : '' }}>Diperiksa</option>
                                             </select>
                                         {{-- </span> --}}
                                     </td>
@@ -78,30 +78,28 @@
                                     
                                     <div id="{{ $loan->id }}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="{{ $loan->id }}-dropdown-button">
-                                                {{-- <div> --}}
-                                                    <button id="default-modal" data-modal-target="default-modal-{{$loan->id}}" data-id="{{ $loan->id }}" data-modal-toggle="default-modal-{{$loan->id}}" type="button" class="my-1 pr-48 block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" aria-labelledby="{{ $loan->id }}-dropdown-button">perpanjang&nbsp;Masa&nbsp;Pinjam</button>
-                                                {{-- </div> --}}
+                                            <button id="edit-modal" data-modal-target="edit-modal-{{$loan->id}}" data-id="{{ $loan->id }}" data-modal-toggle="edit-modal-{{$loan->id}}" type="button" class="my-1 pr-48 block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" aria-labelledby="{{ $loan->id }}-dropdown-button">perpanjang&nbsp;Masa&nbsp;Pinjam</button>
                                         </ul>
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" >
-                                            <form onsubmit="return confirm('Buku Sudah Dikembalikan ?');" action="{{ route('books.delete.riwayat', $loan->id) }}" method="POST">
+                                            <form id="kembalikan-buku-form" action="{{ route('books.delete.riwayat', $loan->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <div class="">
-                                                    <button type="submit" class="my-1 pr-48 block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Kembalikan</button>
+                                                    <button data-message="Buku Sudah Dikembalikan?" data-form="kembalikan-buku-form" type="button" class="confirm-button my-1 pr-48 block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Kembalikan</button>
                                                 </div>
                                             </form>
                                         </ul>
-                                        <form onsubmit="return confirm('Buku Ini Rusak ?');" action="{{ route('books.destroy.riwayat', $loan->id) }}" method="POST">
+                                        <form id="buku-rusak-form" action="{{ route('books.destroy.riwayat', $loan->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <div class="">
-                                                <button type="submit" class="my-1 pr-48 block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Rusak</button>
+                                                <button data-message="Buku ini Rusak?" data-form="buku-rusak-form" type="button" class="confirm-button my-1 pr-48 block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Rusak</button>
                                             </div>
                                         </form>
                                 </td>
                             </tr>
 
-                            <div id="default-modal-{{$loan->id}}" aria-labelledby="default-modal-{{ $loan->id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                            <div id="edit-modal-{{$loan->id}}" aria-labelledby="edit-modal-{{ $loan->id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-md max-h-full">
                                     <!-- Modal content -->
                                     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -110,7 +108,7 @@
                                             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                                                 Perpanjang Masa Pinjam
                                             </h3>
-                                            <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal-{{$loan->id}}">
+                                            <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="edit-modal-{{$loan->id}}">
                                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                                 </svg>
@@ -119,7 +117,7 @@
                                         </div>
                                         <!-- Modal body -->
                                         <div class="p-4 md:p-5">
-                                            <form class="space-y-4" action="{{ route('books.perpanjang', $loan->id) }}" method="POST" enctype="multipart/form-data">
+                                            <form id="perpanjang-form-{{$loan->id}}" class="space-y-4" action="{{ route('books.perpanjang', $loan->id) }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 @method('PUT')
                                                 <div>
@@ -128,9 +126,9 @@
                                                 </div>
                                                 <div>
                                                     <label for="tanggal_kembali" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Kembali</label>
-                                                    <input type="date" name="tanggal_kembali" id="tanggal_kembali" placeholder="********" class="my-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value="{{ $loan->tanggal_kembali }}" required />
+                                                    <input type="date" name="tanggal_kembali" id="tanggal_kembali" placeholder="Tanggal Kembali" class="my-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value="{{ $loan->tanggal_kembali }}" required />
                                                 </div>
-                                                <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Perpanjang Masa Pinjam</button>
+                                                <button type="button" data-message="Masa Akan Diperpanjang. Yakin?" data-form="perpanjang-form-{{$loan->id}}" class="confirm-button w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Perpanjang Masa Pinjam</button>
                                             </form>
                                         </div>
                                     </div>
@@ -144,9 +142,5 @@
             </div>
         </div>
         </section>
-
-
-
-
 
 </x-app-layout>

@@ -22,10 +22,13 @@
             
                 <div class="w-full justify-center max-w-md hidden lg:block">
                     {{-- <x-application-logo class="w-20 h-20 fill-current text-gray-500" /> --}}
-                    <img src="/aset/library.webp" alt="Login Image" loading="lazy">
+
+                    <img src="/aset/library.webp" alt="Image" loading="lazy">
+                    {{-- <img src="/aset/login-register_pictures.png" alt="Image" loading="lazy"> --}}
+
                 </div>
 
-            <div class="lg:w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+            <div class="lg:w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-[#ffc000] shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>
         </div>

@@ -1,50 +1,5 @@
 <x-app-layout>
 
-    {{-- <section class="bg-gray-50 dark:bg-gray-900 lg:pl-64">
-        <h1>Edit Buku</h1>
-        <form action="{{ route('books.update', $books->id) }}" method="POST">
-            @csrf
-
-            <div>
-                <label for="">Judul Buku</label>
-                <input type="text" name="judul_buku" id="" value="{{ $books->judul_buku }}">
-            </div>
-
-            <div>
-                <label for="">Penulis</label>
-                <input type="text" name="penulis" id="" value="{{ $books->penulis }}">
-            </div>    
-
-            <div>
-                <label for="">Kategori</label>
-                <input type="text" name="kategori" id="" value="{{ $books->kategori }}">
-            </div>
-
-            <div>    
-                <label for="">Tahun Terbit</label>
-                <input type="number" name="tahun_terbit" id="" value="{{ $books->tahun_terbit }}">
-            </div>
-
-            <div>
-                <label for="">Jumlah Stock</label>
-                <input type="number" name="jumlah_stock" id="" value="{{ $books->jumlah_stock }}">
-            </div>
-
-            <div>
-                <label for="">Status</label>
-                <input type="text" name="status" id="" value="{{ $books->status }}">
-            </div>
-
-            <div>
-                <label for="">Deskripsi</label>
-                <input type="text" name="deskripsi" id="" value="{{ $books->deskripsi }}">
-            </div>
-
-            <button type="submit">Simpan</button>
-        </form>
-    </section> --}}
-
-
     <section class="bg-white dark:bg-gray-900 lg:pl-64">
         <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
             <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-whitet">Edit Buku</h2>

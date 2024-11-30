@@ -1,5 +1,7 @@
 <x-app-layout>
 
+    
+
     <section class="bg-white dark:bg-gray-900 p-3 sm:p-5 lg:pl-64 mx-5">
         <h1 class="dark:text-white text-center font-extrabold text-3xl my-10">Riwayat Buku Dipinjam</h1>
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
@@ -54,7 +56,7 @@
                                 <td class="px-4 py-3">{{ $loan->tanggal_pinjam }}</td>
                                 <td class="px-4 py-3">{{ $loan->tanggal_kembali }}</td>
                                 <td class="px-4 py-3">
-                                    <span class="{{ $loan->status === 'borrowed' ? 'bg-yellow-500 text-black p-1 rounded-md' : 'bg-green-500 text-white p-1 rounded-md' }}">
+                                    <span class="{{ $loan->status === 'borrowed' ? 'bg-red-500 border-2 text-black p-1 rounded-md' : 'bg-yellow-500 border-2 text-black p-1 rounded-md' }}">
                                         {{ ucfirst($loan->status) }}
                                     </span>
                                 </td>
