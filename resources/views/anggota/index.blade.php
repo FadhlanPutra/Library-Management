@@ -2,15 +2,19 @@
     
     <section class="bg-white dark:bg-gray-900 p-3 sm:p-5 lg:pl-64 mx-5">
         <h1 class="dark:text-white text-center font-extrabold text-3xl">Daftar Buku Perpustakaan</h1>
-        
+    
+        @php
+            $no = 1;
+        @endphp
 
-        <div class="grid sm:grid-cols-4 gap-5">
+        <div class="grid sm:grid-cols-4 gap-5"> 
         @foreach ($books as $book)
         
     
     <div class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 my-10">
-        <a href="#">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $book->judul_buku }}</h5>
+        <span hidden>{{ $no++ }}</span>
+    <a href="#">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ Str::words($book->judul_buku, 5) }}</h5>
     </a>
     <div class="">
         <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">Penulis: {{ $book->penulis }}</p>
@@ -106,6 +110,30 @@
 @endforeach 
 
 {{ $books->links() }}
+
+@php
+            // dump(request('search'
+            $no --  ;
+            $msg;
+            $search = $search ?? null;
+            if ($no == 0 && is_null($search)) {
+                $msg = "<span style='color:red; margin-left:1.25rem;'>Data Belum Tersedia</span>";
+            }
+            elseif ($no == 0 && isset($search)) {
+                $msg = "<p class='text-white ml-5'>Nama Yang Anda Cari \"<span style='color:red;'>$search</span>\" Tidak Ada</p>";
+            }
+            elseif ($no > 0 && isset($search)) {
+                $msg = "<p class='text-white ml-5'>Menampilkan <span style='color:rgb(1, 255, 1);'>$no</span> hasil pada pencarian Nama \"<span style='color:rgb(1, 255, 1);'>$search</span>\"</p>";
+            }
+            else {
+                $msg = "";
+            };
+            echo $msg;
+            // echo request('search');
+            // echo $search;
+            // echo $no;
+        @endphp
+
 
     </section>
 </x-app-layout>

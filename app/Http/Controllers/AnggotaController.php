@@ -108,8 +108,16 @@ class AnggotaController extends Controller
         //
     }
 
-    public function riwayat(){
-        $loans = pinjamBuku::paginate(10);
-        return view('anggota.riwayat', compact('loans'));
+    public function riwayat(Request $request){
+        // $loans = pinjamBuku::paginate(10);
+
+        $search = $request->input('search'); 
+
+        // $loans = Book::where('judul_buku', 'like', '%' . $search . '%')
+        $loans = PinjamBuku::whereHas('User', function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%');
+        })->latest()->paginate(10);
+
+        return view('anggota.riwayat', compact('loans', 'search'));
     }
 }

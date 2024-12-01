@@ -15,10 +15,13 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
-        return view('users.index', compact('users'));
+        // $users = User::paginate(10);
+        $search = $request->input('search');
+
+        $users = User::where('name', 'like', '%' . $search . '%')->latest()->paginate(10);
+        return view('users.index', compact('users', 'search'));
     }
 
     /**

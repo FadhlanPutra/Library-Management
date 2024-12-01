@@ -1,6 +1,6 @@
 <x-guest-layout>
 
-    <div class=' text-white mb-3'>
+    <div class=' dark:text-white mb-3'>
         <h1 class='font-bold text-3xl'>Daftar Menjadi Anggota</br>Perpustakaan SMK PESAT</h1>
         <p class='text-[#000000] my-5'>Lengkapi Data di Bawah Ini</p>
     </div>

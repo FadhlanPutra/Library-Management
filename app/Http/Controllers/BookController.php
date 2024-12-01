@@ -15,10 +15,15 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::paginate(10);
-        return view('books.index', compact('books'));
+        // $books = Book::paginate(10);
+
+        $search = $request->input('search'); 
+
+        $books = Book::where('judul_buku', 'like', '%' . $search . '%')->latest()->paginate(10);
+
+        return view('books.index', compact('books', 'search'));
     }
 
     /**
@@ -97,12 +102,20 @@ class BookController extends Controller
     }
     
 
-    // RIWAYAT 
+    // RIWAYAT ---------------------------------------------------------------------------------------------
 
 
-    public function riwayat(){
-        $loans = pinjamBuku::paginate(10);
-        return view('books.riwayat', compact('loans'));
+    public function riwayat(Request $request): View{
+        // $loans = pinjamBuku::paginate(10);
+        $search = $request->input('search'); 
+
+        // $loans = Book::where('judul_buku', 'like', '%' . $search . '%')
+        $loans = PinjamBuku::whereHas('User', function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%');
+        })->latest()->paginate(10);
+
+
+        return view('books.riwayat', compact('loans', 'search'));
     }
 
     public function updateRiwayat(Request $request, string $id)

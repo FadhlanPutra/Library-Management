@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <div class='text-white'>
+    <div class='dark:text-white'>
         <h1 class='font-bold text-3xl'>Selamat Datang di </br>Perpustakaan SMK PESAT</h1>
         <p class='text-[#000000] my-5'>Silahkan login dengan akun anggota Anda</p>
     </div>

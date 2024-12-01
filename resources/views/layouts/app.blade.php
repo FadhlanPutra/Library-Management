@@ -7,7 +7,7 @@
         <link rel="icon" href="{{ asset('aset/buku.webp') }}" type="image/x-icon">
         {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
 
-        <title>Perpustakaan-Pesat_{{ucfirst(Auth::user()->role)}}</title>
+        <title>Perpustakaan-Pesat {{ucfirst(Auth::user()->role)}}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -40,9 +40,17 @@
             <nav class="bg-white text-white border-gray-200 p-4 dark:bg-gray-800 drop-shadow-lg">
                 
                 <div class="flex flex-row justify-between gap-6 items-center px-4 sm:px-6 lg:px-4 xl:pl-64 md:pl-32 drop-shadow-md">
-                    <div>
-                        <input type="text" class="rounded-lg border-gray-500 focus:ring-opacity-50" placeholder="Cari Buku...">
-                    </div>
+                    @if (Auth::user()->role == 'admin')    
+                        <form method="GET" action="{{ route('books.index') }}">
+                            <input id="search" name="search" type="text" class="text-black rounded-lg border-gray-500 focus:ring-opacity-50" placeholder="Cari Buku...">
+                        </form> 
+                    @elseif (Auth::user()->role == 'anggota')
+                        <form method="GET" action="{{ route('anggota.index') }}">
+                            <input id="search" name="search" type="text" class="text-black rounded-lg border-gray-500 focus:ring-opacity-50" placeholder="Cari Buku...">
+                        </form>
+                    @endif
+
+
                     <div class="flex flex-row gap-4">
                         <p>{{ $waktu }}</p>
                         <i class="fa-regular fa-calendar pt-1"></i>
@@ -119,7 +127,14 @@
             }
         });
     }
-    });
+});
+
+
+
+    function clearInput(){
+        document.getElementById(search).value = '';
+        document.getElementById(formId).submit();
+    };
 
 
 </script>

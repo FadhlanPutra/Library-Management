@@ -17,10 +17,10 @@
 
 
     
-    <section class="bg-black dark:bg-gray-900 lg:pl-64 mx-3 pt-5">
+    <section class="bg-white dark:bg-gray-900 lg:pl-64 mx-3 pt-5">
     
-    <div class="flex flex-col me-1 text-white">
-        <div class='p-4 bg-black rounded-xl border-black shadow-lg'>
+    <div class="flex flex-col me-1 dark:text-white">
+        <div class='p-4 dark:bg-black rounded-xl border-black shadow-lg'>
             <div class='flex flex-col lg:flex-row gap-8  justify-center'>
                 <img src="/aset/library.webp" alt="logo Library" class='w-full max-w-md' loading="lazy"/>
                 <div class='flex flex-col justify-center gap-4 lg:w-1/2'>
@@ -34,13 +34,17 @@
                         </a>
 
                         <a href="{{ route('anggota.index') }}">
-                            <button class='p-3 px-6 bg-[#A78E51] rounded-full'>Pinjam Buku</button>
+                            <button class='p-3 px-6 bg-[#A78E51] rounded-full'>Lihat Data Buku</button>
                         </a>
                     </div>
-                @endif
+                
 
-                @if(Auth::user()->role == 'anggota')
+                @elseif(Auth::user()->role == 'anggota')
                     <div class='flex lg:gap-5 max-sm:justify-between'>
+                        <a href="{{ route('anggota.riwayat') }}">
+                            <button href='#' class='p-3 px-6 bg-gray-300 rounded-full text-black'>Lihat Riwayat</button>
+                        </a>
+
                         <a href="{{ route('anggota.index') }}">
                             <button class='p-3 px-6 bg-[#A78E51] rounded-full'>Pinjam Buku</button>
                         </a>
@@ -55,7 +59,7 @@
     </div>
 
         
-        <div class="mt-10 me-1 text-white">
+        <div class="mt-10 me-1 dark:text-white text-black">
             <h1 class='font-medium text-2xl'>Info Dashboard Buku</h1>
 
             <div class="flex max-sm:flex-col lg:flex-row justify-between">
@@ -64,9 +68,9 @@
                     <a href="{{ route('books.riwayat') }}">
                         <button class='p-2 px-3 mt-1 bg-gray-300 rounded-full w-full text-black'>Kelola</button>
                     </a>
-                @endif
+                
 
-                @if(Auth::user()->role == 'anggota')
+                @elseif(Auth::user()->role == 'anggota')
                 <a href="{{ route('anggota.index') }}">
                     <button class='p-2 px-3 mt-1 bg-gray-300 rounded-full w-full text-black'>Lihat Buku</button>
                 </a>

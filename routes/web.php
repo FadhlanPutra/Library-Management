@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::group(['middleware' => ['auth', 'role:admin']], function (){
+    route::resource('/search', BookController::class)->names(['index' => 'search']);
+
     Route::put('/riwayat/perpanjang/{id}',[bookController::class,'perpanjang'])->name('books.perpanjang');
     Route::get('/admin/riwayat', [BookController::class, 'riwayat'])->name('books.riwayat');
     Route::patch('/admin/riwayat/{id}', [BookController::class, 'updateRiwayat'])->name('books.update.riwayat');
@@ -40,9 +42,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function (){
     Route::resource('users', UsersController::class);
 });
 
-Route::resource('anggota', AnggotaController::class);
 
 Route::group(['middleware' => ['auth', 'role:anggota']], function (){
+    Route::resource('anggota', AnggotaController::class);
     // Route::get('/riwayat', [BookController::class])->name('books.riwayat');
     Route::get('/riwayat', [AnggotaController::class, 'riwayat'])->name('anggota.riwayat');
 });

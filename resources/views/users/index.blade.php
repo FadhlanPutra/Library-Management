@@ -1,12 +1,12 @@
 <x-app-layout>
 
-    <section class="bg-black dark:bg-gray-900 lg:pl-64 mx-3 pt-5">
+    <section class=" dark:bg-gray-900 lg:pl-64 mx-3 pt-5">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
             <!-- Start coding here -->
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                 <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4 mb-10">
                     <div class="w-full md:w-1/2">
-                        <form class="flex items-center">
+                        <form class="flex items-center" id="form-search-user" method="GET">
                             <label for="simple-search" class="sr-only">Search</label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -14,7 +14,12 @@
                                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
+                                <button onclick="clearInput()" type="button" class="absolute inset-y-0 right-1 flex items-center pl-3">
+                                    <svg  class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                                    </svg>
+                                </button>
+                                <input value="{{ $search }}" name="search" id="search-user" type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
                             </div>
                         </form>
                     </div>
@@ -63,10 +68,14 @@
                                 </th>
                             </tr>
                         </thead>
+                        @php
+                        $no = 1;
+                        @endphp
+
                         @foreach ($users as $user)
                         <tbody>
                             <tr class="border-b dark:border-gray-700">
-                                <td class="px-4 py-3">{{ $loop->iteration }}</td>
+                                <td class="px-4 py-3">{{ $no++ }}</td>
                                 <td class="px-4 py-3">{{ $user->name }}</td>
                                 <td class="px-4 py-3">{{ $user->email }}</td>
                                 <td class="px-4 py-3">{{ ucfirst($user->role) }}</td>
@@ -134,6 +143,33 @@
                         </div> 
 
                         @endforeach
+
+                        @php
+                        // dump(request('search'));
+
+                        $no --  ;
+                        $msg;
+                        $search = $search ?? null;
+
+                        if ($no == 0 && is_null($search)) {
+                            $msg = "<span style='color:red; margin-left:1.25rem;'>Data Belum Tersedia</span>";
+                        }
+                        elseif ($no == 0 && isset($search)) {
+                            $msg = "<p class='text-white ml-5'>Nama Yang Anda Cari \"<span style='color:red;'>$search</span>\" Tidak Ada</p>";
+                        }
+                        elseif ($no > 0 && isset($search)) {
+                            $msg = "<p class='text-white ml-5'>Menampilkan <span style='color:rgb(1, 255, 1);'>$no</span> hasil pada pencarian Nama \"<span style='color:rgb(1, 255, 1);'>$search</span>\"</p>";
+                        }
+                        else {
+                            $msg = "";
+                        };
+
+                        echo $msg;
+                        // echo request('search');
+                        // echo $search;
+                        // echo $no;
+                        @endphp
+
                     </table>
                     {{ $users->links() }}
                 </div>
@@ -179,9 +215,12 @@
             </div>
         </div>
     </div>
-</div> 
-
-
-
-
+</div>
 </x-app-layout>
+
+<script>
+    function clearInput(){
+        document.getElementById('search-user').value = '';
+        document.getElementById('form-search-user').submit();
+    };
+</script>
