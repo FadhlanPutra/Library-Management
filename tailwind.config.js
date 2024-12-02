@@ -61,4 +61,5 @@ export default {
     },
 
     plugins: [forms, 'flowbite/plugin'],
+    darkMode: 'class',
 };

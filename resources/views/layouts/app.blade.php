@@ -21,8 +21,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     </head>
     <body class="font-sans antialiased">
-
-        @php
+            
+            @php
             $waktu = now()->locale('id')->isoFormat('dddd, D MMMM YYYY | HH:mm');
 
             $jam = (int) now()->locale('id')->isoFormat('HH');
@@ -32,12 +32,12 @@
             } else {
                 $icon = '<i id="theme-toggle-icon" class="fa-solid fa-moon pt-1"></i>';
             }
-        @endphp
+            @endphp
         
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             @include('layouts.navigation')
 
-            <nav class="bg-white text-white border-gray-200 p-4 dark:bg-gray-800 drop-shadow-lg">
+            <nav class="bg-white dark:text-white border-gray-200 p-4 dark:bg-gray-800 drop-shadow-lg">
                 
                 <div class="flex flex-row justify-between gap-6 items-center px-4 sm:px-6 lg:px-4 xl:pl-64 md:pl-32 drop-shadow-md">
                     @if (Auth::user()->role == 'admin')    
