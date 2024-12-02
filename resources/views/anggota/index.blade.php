@@ -119,10 +119,10 @@
             if ($no == 0 && is_null($search)) {
                 $msg = "<span style='color:red; margin-left:1.25rem;'>Data Belum Tersedia</span>";
             }
-            elseif ($no == 0 && isset($search)) {
+            elseif ($no == 0 && !empty($search)) {
                 $msg = "<p class='text-white ml-5'>Nama Yang Anda Cari \"<span style='color:red;'>$search</span>\" Tidak Ada</p>";
             }
-            elseif ($no > 0 && isset($search)) {
+            elseif ($no > 0 && !empty($search)) {
                 $msg = "<p class='text-white ml-5'>Menampilkan <span style='color:rgb(1, 255, 1);'>$no</span> hasil pada pencarian Nama \"<span style='color:rgb(1, 255, 1);'>$search</span>\"</p>";
             }
             else {

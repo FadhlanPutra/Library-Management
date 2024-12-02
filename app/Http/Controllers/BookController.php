@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Log;
 use App\Models\User;
 use \App\Models\Book;
 use Illuminate\View\View;
@@ -220,5 +221,23 @@ class BookController extends Controller
 
         $loan->update($request->all());
         return redirect()->route('books.riwayat')->with('success', 'Masa Berhasil Diperpanjang');
+    }
+
+    // LOG ------------------------------------------------------------------------------------------------------
+    public function log(Request $request){
+        // $logs = Log::all();
+
+        $search = $request->input('search'); 
+
+        $search = strtolower($search);
+        $logs = Log::where('message', 'like', '%' . $search . '%')->latest()->paginate(10);
+
+        // $logs = Log::whereRaw('LOWER(judul_buku) LIKE ?', ['%' . $search . '%'])
+        //         ->orWhereRaw('LOWER(user) LIKE ?', ['%' . $search . '%'])
+        //         ->orWhereRaw('LOWER(message) LIKE ?', ['%' . $search . '%'])
+        //         ->latest()
+        //         ->paginate(10);
+
+        return view('books.log', compact('logs', 'search'));
     }
 }

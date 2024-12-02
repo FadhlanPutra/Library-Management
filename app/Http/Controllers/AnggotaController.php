@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Log;
 use App\Models\Book;
 use App\Models\pinjamBuku;
 use Illuminate\Http\Request;
@@ -66,6 +67,12 @@ class AnggotaController extends Controller
             'tanggal_pinjam' => $request->tanggal_pinjam,
             'tanggal_kembali' => $request->tanggal_kembali,
             'status' => 'borrowed',
+        ]);
+
+        Log::create([
+            'user' => Auth::user()->name,
+            'message' => 'Meminjam Buku',
+            'judul_buku' => $book->judul_buku,
         ]);
 
         //perbarui status

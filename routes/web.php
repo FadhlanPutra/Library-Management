@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
 
 Route::group(['middleware' => ['auth', 'role:admin']], function (){
     route::resource('/search', BookController::class)->names(['index' => 'search']);
+    Route::get('log', [BookController::class, 'log'])->name('books.log');
 
     Route::put('/riwayat/perpanjang/{id}',[bookController::class,'perpanjang'])->name('books.perpanjang');
     Route::get('/admin/riwayat', [BookController::class, 'riwayat'])->name('books.riwayat');
