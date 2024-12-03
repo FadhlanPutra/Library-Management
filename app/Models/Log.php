@@ -11,6 +11,8 @@ class Log extends Model
         'user',
         'message',
         'judul_buku',
+        'level_log',
+        'role',
     ];
 
 

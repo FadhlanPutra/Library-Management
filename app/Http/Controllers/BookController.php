@@ -51,6 +51,15 @@ class BookController extends Controller
         ]);
 
         Book::create($request->all());
+        
+        Log::create([
+            'level_log' => 'INFO',
+            'user' => Auth::user()->name,
+            'message' => 'Menambahkan Buku',
+            'judul_buku' => $request->judul_buku,
+            'role' => Auth::user()->role,
+        ]);
+
         return redirect()->route('books.index')->with('success', 'Book created successfully');
     }
 
@@ -69,6 +78,7 @@ class BookController extends Controller
     public function edit(string $id)
     {
         $books = book::findOrFail($id);
+
         return view('books.edit', compact('books'));
     }
 
@@ -77,6 +87,7 @@ class BookController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $book = Book::findOrFail($id);
         $request->validate([
             'judul_buku' => 'required',
             'penulis' => 'required', 
@@ -87,8 +98,16 @@ class BookController extends Controller
             'deskripsi' => 'required',
         ]);
 
-        $book = Book::findOrFail($id);
         $book->update($request->all());
+
+        Log::create([
+            'level_log' => 'INFO',
+            'user' => Auth::user()->name,
+            'message' => 'Mengedit Informasi Buku',
+            'judul_buku' => $request->judul_buku,
+            'role' => Auth::user()->role,
+        ]);
+
         return redirect()->route('books.index')->with('success', 'Buku Berhasil Diubah');
     }
 
@@ -99,6 +118,15 @@ class BookController extends Controller
     {
         $book = Book::find($id);
         $book->delete();
+
+        Log::create([
+            'level_log' => 'WARNING',
+            'user' => Auth::user()->name,
+            'message' => 'Menghapus Buku',
+            'judul_buku' => $book->judul_buku,
+            'role' => Auth::user()->role,
+        ]);
+
         return redirect()->route('books.index')->with('success', 'Buku Berhasil Dihapus');
     }
     
@@ -169,10 +197,26 @@ class BookController extends Controller
             $user->update(['buku_diperiksa' => 0]);
         }
 
+        Log::create([
+            'level_log' => 'INFO',
+            'user' => Auth::user()->name,
+            'message' => 'Mengembalikan Buku',
+            'judul_buku' => $book->judul_buku,
+            'role' => Auth::user()->role,
+        ]);
+
         $loan->delete();
 
         return redirect()->route('books.riwayat')->with('success', 'Buku Sudah Dikembalikan');
     }
+
+    Log::create([
+        'level_log' => 'ERROR',
+        'user' => Auth::user()->name,
+        'message' => 'Buku Gagal Dikembalikan',
+        'judul_buku' => $loan->judul_buku,
+        'role' => Auth::user()->role,
+    ]);
 
     return redirect()->route('books.riwayat')->with('error', 'Peminjaman tidak ditemukan');
 }
@@ -183,11 +227,18 @@ class BookController extends Controller
         $loan = pinjamBuku::find($id);
         $user = User::find(Auth::id());
 
-
+        Log::create([
+            'level_log' => 'WARNING',
+            'user' => Auth::user()->name,
+            'message' => 'Buku Rusak',
+            'judul_buku' => $loan->book->judul_buku,
+            'role' => Auth::user()->role,
+        ]);
+        
         if ($loan) {
             $user = User::find(Auth::id());
-    
             // dd($user);
+    
 
             if ($user) {
                 // Increment kolom 'buku_rusak' untuk pengguna yang sedang login
@@ -204,12 +255,14 @@ class BookController extends Controller
             $loan->delete();
         }
 
+
         return redirect()->route('books.riwayat')->with('success', 'Buku Sudah Dihapus Dari Stock');
     }
 
     public function perpanjang(Request $request, string $id)
     {
         $loan = pinjamBuku::findOrFail($id);
+        $book = book::findOrFail($id);
 
         $request->validate([
             'tanggal_kembali' => 'required'
@@ -220,6 +273,15 @@ class BookController extends Controller
         ]);
 
         $loan->update($request->all());
+
+        Log::create([
+            'level_log' => 'INFO',
+            'user' => Auth::user()->name,
+            'message' => 'Memperpanjang Masa Pinjam',
+            'judul_buku' => 'buku: '. $book->judul_buku . "<br>". 'Peminjam: '. $loan->user->name ,
+            'role' => Auth::user()->role,
+        ]);
+
         return redirect()->route('books.riwayat')->with('success', 'Masa Berhasil Diperpanjang');
     }
 
@@ -230,7 +292,7 @@ class BookController extends Controller
         $search = $request->input('search'); 
 
         $search = strtolower($search);
-        $logs = Log::where('message', 'like', '%' . $search . '%')->latest()->paginate(10);
+        $logs = Log::where('message', 'like', '%' . $search . '%')->latest()->paginate(100);
 
         // $logs = Log::whereRaw('LOWER(judul_buku) LIKE ?', ['%' . $search . '%'])
         //         ->orWhereRaw('LOWER(user) LIKE ?', ['%' . $search . '%'])

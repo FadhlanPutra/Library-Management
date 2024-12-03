@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('user');
             $table->string('message');
+            $table->string('level_log');
             $table->string('judul_buku')->default('-');
             $table->timestamps();
         });

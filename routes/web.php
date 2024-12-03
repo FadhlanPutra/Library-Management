@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::group(['middleware' => ['auth', 'role:admin']], function (){
-    route::resource('/search', BookController::class)->names(['index' => 'search']);
+    Route::resource('/search', BookController::class)->names(['index' => 'search']);
     Route::get('log', [BookController::class, 'log'])->name('books.log');
 
     Route::put('/riwayat/perpanjang/{id}',[bookController::class,'perpanjang'])->name('books.perpanjang');
@@ -48,6 +48,10 @@ Route::group(['middleware' => ['auth', 'role:anggota']], function (){
     Route::resource('anggota', AnggotaController::class);
     // Route::get('/riwayat', [BookController::class])->name('books.riwayat');
     Route::get('/riwayat', [AnggotaController::class, 'riwayat'])->name('anggota.riwayat');
+});
+
+Route::get('/register', function () {
+    return redirect('/login'); 
 });
 
 require __DIR__.'/auth.php';

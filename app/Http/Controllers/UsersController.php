@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use App\Models\Log;
+
 
 class UsersController extends Controller
 {
@@ -49,6 +51,15 @@ class UsersController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'anggota',
         ]);
+
+        Log::create([
+            'level_log' => 'INFO',
+            'user' => Auth::user()->name,
+            'message' => 'Menambahkan Data User',
+            'judul_buku' => 'User: '. $request->name,
+            'role' => Auth::user()->role,
+        ]);
+
         return redirect()->route('users.index')->with('success', 'Anggota Berhasil Ditambahkan');
     }
 
@@ -80,6 +91,14 @@ class UsersController extends Controller
         
         $user = User::findOrFail($id);
 
+        Log::create([
+            'level_log' => 'WARNING',
+            'user' => Auth::user()->name,
+            'message' => 'Mengubah Informasi User',
+            'judul_buku' => 'User: '. $request->name,
+            'role' => Auth::user()->role,
+        ]);
+
         $user->update($request->all());
     
             return redirect()->route('users.index')->with('success', 'Data User Berhasil Diubah');
@@ -92,6 +111,15 @@ class UsersController extends Controller
     public function destroy(string $id)
     {
         $user = User::find($id);
+
+        Log::create([
+            'level_log' => 'WARNING',
+            'user' => Auth::user()->name,
+            'message' => 'Menghapus User',
+            'judul_buku' => 'User: '. $user->name,
+            'role' => Auth::user()->role,
+        ]);
+
         $user->delete();
         return redirect()->route('users.index')->with('success', 'Akun Berhasil Dihapus');
     }

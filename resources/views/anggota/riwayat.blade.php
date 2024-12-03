@@ -41,6 +41,7 @@
                                 <th scope="col" class="px-4 py-3">Nama Peminjam</th>
                                 <th scope="col" class="px-4 py-3">Tanggal Pinjam</th>
                                 <th scope="col" class="px-4 py-3">Tanggal Kembali</th>
+                                <th scope="col" class="px-4 py-3">Tenggat Hari</th>
                                 <th scope="col" class="px-4 py-3">Status</th>
                                 
                             </tr>
@@ -53,8 +54,17 @@
 
                         @php
                             $time = date('Y-m-d');
-                            $timeClass = $loan->tanggal_kembali === $time ? 'text-red-500' : '';
-                            $timeClass2 = $loan->tanggal_kembali < $time ? 'bg-red-500 text-white' : '';
+                            $timeClass = $loan->tanggal_kembali === $loan->tanggal_pinjam ? 'text-red-500' : '';
+                            $timeClass2 = $loan->tanggal_kembali < $loan->tanggal_pinjam ? 'bg-red-500 text-white' : '';
+
+                            $pinjam = \Carbon\Carbon::parse($loan->tanggal_pinjam);
+                            $kembali = \Carbon\Carbon::parse($loan->tanggal_kembali);
+
+                            $days = $pinjam->diffInDays($kembali);
+
+                            $Class = $days == 1 ? 'text-yellow-500' : '';
+                            $Class2 = $days == 0 ? 'text-red-500' : '';
+                            $Class3 = $days < 0 ? 'text-white' : '';
                         @endphp
                             <tr class="border-b dark:border-gray-700 {{ $timeClass. ' ' .$timeClass2 }}">
                                 <td class="px-4 py-3">{{ $no++ }}</td>
@@ -63,6 +73,7 @@
                                 <td class="px-4 py-3">{{ $loan->user->name }}</td>
                                 <td class="px-4 py-3">{{ $loan->tanggal_pinjam }}</td>
                                 <td class="px-4 py-3">{{ $loan->tanggal_kembali }}</td>
+                                <td class="px-4 py-3 {{ $Class. ' ' .$Class2. ' ' .$Class3 }}">{{ $days }} Hari Lagi</td>
                                 <td class="px-4 py-3">
                                     <span class="{{ $loan->status === 'borrowed' ? 'bg-red-500 border-2 text-black p-1 rounded-md' : 'bg-yellow-500 border-2 text-black p-1 rounded-md' }}">
                                         {{ ucfirst($loan->status) }}

@@ -31,9 +31,12 @@
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-4 py-3">No</th>
+                                <th scope="col" class="px-4 py-3">Waktu</th>
+                                <th scope="col" class="px-4 py-3">Level Log</th>
                                 <th scope="col" class="px-4 py-3">User</th>
                                 <th scope="col" class="px-4 py-3">Pesan Log</th>
                                 <th scope="col" class="px-4 py-3">Buku</th>
+                                <th scope="col" class="px-4 py-3">Role Pelaku</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,11 +45,21 @@
                             @endphp
 
                         @foreach ($logs as $log)
+
+                            @php
+                                $Class = $log->level_log === 'INFO' ? 'text-blue-500' : '';
+                                $Class2 = $log->level_log === 'WARNING' ? 'text-yellow-500' : '';
+                                $Class3 = $log->level_log === 'ERROR' ? 'text-red-500' : '';
+                            @endphp
+
                             <tr class="border-b dark:border-gray-700">
                                 <td class="px-4 py-3">{{ $no++ }}</td>
+                                <td class="px-4 py-3">{{ $log->created_at }}</td>
+                                <td class="px-4 py-3 font-medium {{ $Class. ' ' .$Class2. ' ' .$Class3 }}">{{ ucfirst($log->level_log)}}</td>
                                 <td class="px-4 py-3">{{ ucfirst($log->user) }}</td>
                                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ Str::words($log->message, 5) }}</th>
-                                <td class="px-4 py-3">{{ Str::words($log->judul_buku, 5) }}</td>                            
+                                <td class="px-4 py-3">{!! Str::words($log->judul_buku, 5) !!}</td>                            
+                                <td class="px-4 py-3">{!! ucfirst($log->role) !!}</td>                            
                             </tr>
                         @endforeach
 

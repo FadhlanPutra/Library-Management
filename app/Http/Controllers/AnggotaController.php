@@ -32,56 +32,63 @@ class AnggotaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
-    {
-        $request->validate([
-            'book_id' => 'required|exists:books,id',
-            'tanggal_pinjam' => 'required|date',
-            'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
-        ]);
+{
+    $request->validate([
+        'book_id' => 'required|exists:books,id',
+        'tanggal_pinjam' => 'required|date',
+        'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
+    ]);
 
-        // dd($request->all());
+    $book = Book::findOrFail($request->book_id);
 
-        $book = Book::findOrFail($request->book_id);
-
-        //cek ketersediaan buku
-        if(!$book->status) {
-            return back()->with('error', 'stock buku sudah habis');
-        }
-
-        // $book->update(['loan_status' => 'borrowed']);
-
-        $book->decrement('jumlah_stock');
-
-        if ($book->jumlah_stock == 0) {
-            // $book->update(['loan_status' => 'borrowed']);
-            $book->update(['status' => 0]);
-        } elseif ($book->jumlah_stock >= 1) {
-            $book->update(['status' => 1]);
-        }
-
-        //buat peminjaman
-        pinjamBuku::create([        
-            'user_id' => Auth::id(),
-            'book_id' => $book->id,
-            'tanggal_pinjam' => $request->tanggal_pinjam,
-            'tanggal_kembali' => $request->tanggal_kembali,
-            'status' => 'borrowed',
-        ]);
-
+    // Cek ketersediaan stok buku
+    if ($book->jumlah_stock <= 0) {
+        
         Log::create([
+            'level_log' => 'ERROR',
             'user' => Auth::user()->name,
-            'message' => 'Meminjam Buku',
+            'message' => 'Tidak Dapat Meminjam Buku',
             'judul_buku' => $book->judul_buku,
+            'role' => Auth::user()->role,
         ]);
 
-        //perbarui status
-        $book->update([
-            'loan_status' => 'borrowed',
-        ]);
-
-        return redirect()->back()->with('success', 'Buku berhasil dipinjam');
+        return back()->with('error', 'Stok buku sudah habis');
     }
+
+    $book->decrement('jumlah_stock');
+
+    // Perbarui status berdasarkan jumlah stok
+    if ($book->jumlah_stock == 0) {
+        $book->update(['status' => 0]); // Status "tidak tersedia"
+    } else {
+        $book->update(['status' => 1]); // Status "tersedia"
+    }
+
+    pinjamBuku::create([
+        'user_id' => Auth::id(),
+        'book_id' => $book->id,
+        'tanggal_pinjam' => $request->tanggal_pinjam,
+        'tanggal_kembali' => $request->tanggal_kembali,
+        'status' => 'borrowed',
+    ]);
+
+    Log::create([
+        'level_log' => 'INFO',
+        'user' => Auth::user()->name,
+        'message' => 'Meminjam Buku',
+        'judul_buku' => $book->judul_buku,
+        'role' => Auth::user()->role,
+    ]);
+
+    $book->update([
+        'loan_status' => 'borrowed',
+    ]);
+
+    return redirect()->back()->with('success', 'Buku berhasil dipinjam');
+}
+
 
     /**
      * Display the specified resource.
