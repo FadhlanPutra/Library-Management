@@ -45,9 +45,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function (){
 
 
 Route::group(['middleware' => ['auth', 'role:anggota']], function (){
-    Route::resource('anggota', AnggotaController::class);
     // Route::get('/riwayat', [BookController::class])->name('books.riwayat');
     Route::get('/riwayat', [AnggotaController::class, 'riwayat'])->name('anggota.riwayat');
+    Route::resource('anggota', AnggotaController::class);
 });
 
 Route::get('/register', function () {

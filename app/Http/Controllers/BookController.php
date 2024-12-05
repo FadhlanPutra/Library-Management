@@ -262,7 +262,7 @@ class BookController extends Controller
     public function perpanjang(Request $request, string $id)
     {
         $loan = pinjamBuku::findOrFail($id);
-        $book = book::findOrFail($id);
+        $book = book::find($id);
 
         $request->validate([
             'tanggal_kembali' => 'required'
@@ -278,7 +278,7 @@ class BookController extends Controller
             'level_log' => 'INFO',
             'user' => Auth::user()->name,
             'message' => 'Memperpanjang Masa Pinjam',
-            'judul_buku' => 'buku: '. $book->judul_buku . "<br>". 'Peminjam: '. $loan->user->name ,
+            'judul_buku' => 'buku: '. $loan->book->judul_buku . "<br>". 'Peminjam: '. $loan->user->name ,
             'role' => Auth::user()->role,
         ]);
 
